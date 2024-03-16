@@ -9,7 +9,7 @@
 
 # Blinn: Explore Fragment Shaders with LLMs
 
-Welcome to **Blinn**, an innovative application designed for developers and creative coders who are passionate about exploring the capabilities of fragment shaders within the Three.js environment, enhanced by the power of Large Language Models (LLMs).
+Welcome to **Blinn**, a tool to play around with fragment shaders, with live changes and AI prompting.
 
 The name **Blinn** is in recognition of Jim Blinn, a pioneering computer scientist whose work has significantly influenced the field of computer graphics. His contributions to the development of texture mapping and the Blinn-Phong shading model have laid foundational principles that continue to shape how we render and perceive digital imagery today. By naming this application Blinn, we pay homage to his legacy and the profound impact he has had on both the technical and creative aspects of computer graphics.
 
