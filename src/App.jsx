@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Editor from './Editor';
 import Viewer from './Viewer';
 import Input from './Input'; // Assuming you have this component
-import LinearProgress from '@mui/material/LinearProgress'; // Import CircularProgress for loading animation
+import CircularProgress from '@mui/material/CircularProgress'; // Changed to CircularProgress for a different loading animation
 
 const App = () => {
   const [editorContent, setEditorContent] = useState(`
@@ -65,8 +65,10 @@ const App = () => {
     let contentToEncode = data.editorContent.replace(/uniform float u_time;\nuvarying vec2 vUv;\n\n /, '');
     const encodedFragmentShader = btoa(contentToEncode);
     const encodedData = { fragment_shader: encodedFragmentShader, instruction: data.inputValue };
+    const apiEndpoint = import.meta.env.VITE_BLINN_API_ENDPOINT;
+    const url = `${apiEndpoint}/fragment-shader-change`;
     try {
-      const response = await fetch('http://localhost:8000/fragment-shader-change', {
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -92,7 +94,7 @@ const App = () => {
   return (
     <div style={{ display: "flex", height: "100vh", background: "gray" }}>
       <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "100%", backgroundColor: "#000000" }}>
-        {isLoading ? <LinearProgress /> : ( // Show loading animation if isLoading is true
+        {isLoading ? <CircularProgress size={60} thickness={4.5} style={{ color: '#BDEBF4' }} /> : ( 
           <>
             <Editor initialCode={editorContent} onChange={setEditorContent} />
             <div style={{ position: "absolute", bottom: "12%", width: "100%", display: "flex", justifyContent: "center" }}>
