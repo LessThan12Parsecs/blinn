@@ -28,6 +28,12 @@ The name **Blinn** is in recognition of Jim Blinn, a pioneering computer scienti
 - [ ] **Explain**: Ask questions about specific parts of the shader.
 - [ ] **Record**: Record shader and download it in video/gif format.
 
+## Configuration
+
+Before running Blinn, you need to set up an environment variable to connect with the Blinn API. Create a `.env` file in the root of your project and add the following line:
+```
+VITE_BLINN_API_ENDPOINT="YOUR_API_ENDPOINT_HERE"
+```
 
 ## Getting Started
 
@@ -38,12 +44,7 @@ cd blinn
 npm install
 npm run dev
 ```
-## Configuration
 
-Before running Blinn, you need to set up an environment variable to connect with the Blinn API. Create a `.env` file in the root of your project and add the following line:
-```
-VITE_BLINN_API_ENDPOINT="YOUR_API_ENDPOINT_HERE"
-```
 ## License
 
 Blinn is open-sourced software licensed under the MIT license. See [LICENSE.md](LICENSE.md) for more details.
