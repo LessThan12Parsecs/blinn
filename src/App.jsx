@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Editor from './Editor';
 import Viewer from './Viewer';
-import Input from './Input'; // Assuming you have this component
-import CircularProgress from '@mui/material/CircularProgress'; // Changed to CircularProgress for a different loading animation
+import Input from './Input'; 
+import CircularProgress from '@mui/material/CircularProgress';
+import logo from '../public/logo.png'
 
 const App = () => {
   const [editorContent, setEditorContent] = useState(`
@@ -93,17 +94,18 @@ const App = () => {
 
   return (
     <div style={{ display: "flex", height: "100vh", background: "gray" }}>
+      <img src={logo} alt="Logo" style={{ position: "absolute", top: "2%", right: "46%", width: "200px", height: "auto", zIndex: 1000 }} />
       <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "100%", backgroundColor: "#000000" }}>
         {isLoading ? <CircularProgress size={60} thickness={4.5} style={{ color: '#BDEBF4' }} /> : ( 
           <>
             <Editor initialCode={editorContent} onChange={setEditorContent} />
             <div style={{ position: "absolute", bottom: "12%", width: "100%", display: "flex", justifyContent: "center" }}>
-              <Input getEditorContent={getEditorContent} onSubmit={handleSubmit} />
+              <Input getEditorContent={getEditorContent} onSubmit={handleSubmit} style={{ width: "50%" }} /> {/* Adjusted input width to be wider */}
             </div>
           </>
         )}
       </div>
-      <div style={{ flex: 2, display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
+      <div style={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
         <Viewer fragmentShader={editorContent}/>
       </div>
     </div>

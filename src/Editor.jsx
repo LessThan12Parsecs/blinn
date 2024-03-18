@@ -7,11 +7,12 @@ const Editor = ({ initialCode, onChange }) => {
     <CodeEditor
       value={initialCode}
       language="glsl"
+      data-color-mode="dark"
       placeholder="Please enter JS code."
       onChange={(evn) => onChange(evn.target.value)}
       padding={15}
       style={{
-        backgroundColor: "#39384B",
+        backgroundColor: "#161616",
         fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
         fontSize: '16px', // Increased font size
         height: '100%', 

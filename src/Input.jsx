@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Input } from '@mui/base/Input';
-import './style.css'
+import Input from '@mui/joy/Input';// Changed to Joy UI TextField
 
 const InputComponent = ({ getEditorContent, onSubmit }) => {
   const [inputValue, setInputValue] = useState('');
@@ -19,9 +18,21 @@ const InputComponent = ({ getEditorContent, onSubmit }) => {
   };
 
   return (
-    <Input
-      slotProps={{ input: { className: 'CustomInput' } }}
-      variant="outlined"
+    <Input // Adjusted for Joy UI TextField
+      variant="soft"
+      color="neutral"
+      sx={{
+        '&::before': {
+          display: 'none',
+        },
+        '&:focus-within': {
+          outline: '2px solid var(--Input-focusedHighlight)',
+          outlineOffset: '2px',
+        },
+        backgroundColor: '#FFFFFFE4', // Changed background color to light blue
+        width: "25%"
+      }}
+      placeholder='Type instruction'
       value={inputValue}
       onChange={handleInputChange}
       onKeyPress={handleKeyPress}

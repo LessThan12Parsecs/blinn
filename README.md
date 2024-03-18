@@ -17,10 +17,15 @@ The name **Blinn** is in recognition of Jim Blinn, a pioneering computer scienti
 ## Features Checklist
 
 - [x] **Real-time Shader Editing**: Blinn provides a real-time editing environment for fragment shaders, allowing you to see the effects of your code as you type.
+
+![Real-time Shader Editing](public/editing.gif)
+
 - [x] **AI Assistance**: Leverage the capabilities of Claude through the [blinn-api](https://github.com/lessthan12parsecs/blinn-api) to generate shader code, optimize performance, and get creative suggestions.
 - [x] **Three.js Integration**: Built on top of Three.js, Blinn offers a seamless experience for those familiar with the library and those new to 3D web development.
 - [ ] **Preloaded Examples**: Jump straight into shader development with preloaded examples showcasing what's possible with Blinn and Three.js. 
 - [ ] **Explain**: Ask questions about specific parts of the shader.
+- [ ] **Record**: Record shader and download it in video/gif format.
+
 
 ## Getting Started
 

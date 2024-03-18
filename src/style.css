@@ -9,7 +9,6 @@ body,
     height: 100%;
     margin: 0;
     padding: 0;
-    background: ivory;
 }
 
 #root, #root > div {
@@ -27,16 +26,16 @@ html {
     box-sizing: inherit;
 }
 
-.CustomInput {
-    width: 320px;
+/* .CustomInput {
+    width: 300%;
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 0.875rem;
     font-weight: 400;
     line-height: 1.5;
     padding: 8px 12px;
     border-radius: 8px;
-    color: '#BDEBF4';
-    background: '#C7D0DD';
+    color: '#000000';
+    background: '#0000000';
     border: 1px solid '#B0B8C4';
     box-shadow: 0px 2px 2px '#B0B8C4';
 
@@ -52,4 +51,4 @@ html {
     &:focus-visible {
       outline: 0;
     }
-}
+} */
