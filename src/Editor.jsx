@@ -14,9 +14,15 @@ const Editor = ({ initialCode, onChange }) => {
       style={{
         backgroundColor: "#161616",
         fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
-        fontSize: '16px', // Increased font size
+        fontSize: '18px', 
         height: '100%', 
-        width: '100%'
+        width: '100%',
+        overflow: 'auto', // Enable scrolling
+        scrollbarWidth: 'none', /* For Firefox */
+        '-ms-overflow-style': 'none', /* For Internet Explorer and Edge */
+        '&::-webkit-scrollbar': {
+          display: 'none' /* For Chrome, Safari, and Opera */
+        }
       }}
     />
 
