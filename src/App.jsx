@@ -3,7 +3,9 @@ import Editor from './Editor';
 import Viewer from './Viewer';
 import Input from './Input'; 
 import CircularProgress from '@mui/material/CircularProgress';
-import logo from '../public/logo.png'
+import logo from '../public/logo.png';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 const App = () => {
   const [editorContent, setEditorContent] = useState(`
@@ -57,15 +59,22 @@ const App = () => {
       
   }`);
   const [isLoading, setIsLoading] = useState(false); // State to manage loading state
+  const [aiModel, setAiModel] = useState('gpt4'); // State to manage AI model selection
 
   const getEditorContent = () => editorContent;
+
+  const handleModelChange = (event, newModel) => {
+    if (newModel !== null) {
+      setAiModel(newModel);
+    }
+  };
 
   const handleSubmit = async (data) => {
     setIsLoading(true); // Set loading to true when the request starts
     // Remove "uniform float time" and "uniform vec2 resolution" before encoding
     let contentToEncode = data.editorContent.replace(/uniform float u_time;\nuvarying vec2 vUv;\n\n /, '');
     const encodedFragmentShader = btoa(contentToEncode);
-    const encodedData = { fragment_shader: encodedFragmentShader, instruction: data.inputValue, ai_model:'gpt4' };
+    const encodedData = { fragment_shader: encodedFragmentShader, instruction: data.inputValue, ai_model: aiModel };
     const apiEndpoint = import.meta.env.VITE_BLINN_API_ENDPOINT;
     const url = `${apiEndpoint}/fragment-shader-change`;
     try {
@@ -101,8 +110,21 @@ const App = () => {
             <div style={{ height: "85%", width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
               <Editor initialCode={editorContent} onChange={setEditorContent} />
             </div>
-            <div style={{ height: "15%", width: "100%", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#161616" }}>
+            <div style={{ height: "15%", width: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", backgroundColor: "#161616" }}>
               <Input getEditorContent={getEditorContent} onSubmit={handleSubmit} style={{ width: "50%" }} /> {/* Input is now centered in the remaining 20% height */}
+              <div style={{ marginTop: "20px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <ToggleButtonGroup
+                  color="primary"
+                  value={aiModel}
+                  exclusive
+                  onChange={handleModelChange}
+                  aria-label="AI Model Selection"
+                  style={{ color: "white", boxShadow: "0 0 1px #999" }} // Added subtle outline to toggles
+                >
+                  <ToggleButton value="claude-opus" style={{ color: "white", border: "1px solid rgba(255, 255, 255, 0.3)" }}>Claude-Opus</ToggleButton>
+                  <ToggleButton value="gpt4" style={{ color: "white", border: "1px solid rgba(255, 255, 255, 0.3)" }}>GPT-4-Turbo</ToggleButton>
+                </ToggleButtonGroup>
+              </div>
             </div>
           </>
         )}
