@@ -3,6 +3,8 @@ import Editor from './Editor';
 import Viewer from './Viewer';
 import Input from './Input'; 
 import CircularProgress from '@mui/material/CircularProgress';
+import IconButton from '@mui/material/IconButton'; // Import IconButton for the reset button
+import RefreshIcon from '@mui/icons-material/Refresh'; // Import an icon for the button
 import logo from '../public/logo.png';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
@@ -101,6 +103,16 @@ const App = () => {
     }
   };
 
+  const resetEditorContent = () => {
+    setEditorContent(`uniform float u_time;
+varying vec2 vUv;
+
+void main() {
+    vec3 color = vec3(1.0,1.0,1.0);
+    gl_FragColor = vec4(color, 1.0);
+}`);
+  };
+
   return (
     <div style={{ display: "flex", height: "100vh", background: "gray" }}>
       <img src={logo} alt="Logo" style={{ position: "absolute", top: "2%", right: "46%", width: "200px", height: "auto", zIndex: 1000 }} />
@@ -111,7 +123,12 @@ const App = () => {
               <Editor initialCode={editorContent} onChange={setEditorContent} />
             </div>
             <div style={{ height: "15%", width: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", backgroundColor: "#161616" }}>
-              <Input getEditorContent={getEditorContent} onSubmit={handleSubmit} style={{ width: "50%" }} /> {/* Input is now centered in the remaining 20% height */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: "100%" }}>
+                <Input getEditorContent={getEditorContent} onSubmit={handleSubmit} />
+                <IconButton onClick={resetEditorContent} style={{ marginLeft: '10px', color: 'white' }} aria-label="reset">
+                    <RefreshIcon />
+                </IconButton>
+              </div>
               <div style={{ marginTop: "20px", display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <ToggleButtonGroup
                   color="primary"
