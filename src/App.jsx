@@ -65,7 +65,7 @@ const App = () => {
     // Remove "uniform float time" and "uniform vec2 resolution" before encoding
     let contentToEncode = data.editorContent.replace(/uniform float u_time;\nuvarying vec2 vUv;\n\n /, '');
     const encodedFragmentShader = btoa(contentToEncode);
-    const encodedData = { fragment_shader: encodedFragmentShader, instruction: data.inputValue };
+    const encodedData = { fragment_shader: encodedFragmentShader, instruction: data.inputValue, ai_model:'gpt4' };
     const apiEndpoint = import.meta.env.VITE_BLINN_API_ENDPOINT;
     const url = `${apiEndpoint}/fragment-shader-change`;
     try {
@@ -98,9 +98,11 @@ const App = () => {
       <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "100%", backgroundColor: "#000000" }}>
         {isLoading ? <CircularProgress size={60} thickness={4.5} style={{ color: '#BDEBF4' }} /> : ( 
           <>
-            <Editor initialCode={editorContent} onChange={setEditorContent} />
-            <div style={{ position: "absolute", bottom: "12%", width: "100%", display: "flex", justifyContent: "center" }}>
-              <Input getEditorContent={getEditorContent} onSubmit={handleSubmit} style={{ width: "50%" }} /> {/* Adjusted input width to be wider */}
+            <div style={{ height: "85%", width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+              <Editor initialCode={editorContent} onChange={setEditorContent} />
+            </div>
+            <div style={{ height: "15%", width: "100%", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#161616" }}>
+              <Input getEditorContent={getEditorContent} onSubmit={handleSubmit} style={{ width: "50%" }} /> {/* Input is now centered in the remaining 20% height */}
             </div>
           </>
         )}
