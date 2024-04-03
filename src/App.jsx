@@ -3,8 +3,8 @@ import Editor from './Editor';
 import Viewer from './Viewer';
 import Input from './Input'; 
 import CircularProgress from '@mui/material/CircularProgress';
-import IconButton from '@mui/material/IconButton'; // Import IconButton for the reset button
-import RefreshIcon from '@mui/icons-material/Refresh'; // Import an icon for the button
+import IconButton from '@mui/material/IconButton'; 
+import RefreshIcon from '@mui/icons-material/Refresh'; 
 import logo from '../public/logo.png';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
@@ -119,7 +119,7 @@ void main() {
       <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "100%", backgroundColor: "#000000" }}>
         {isLoading ? <CircularProgress size={60} thickness={4.5} style={{ color: '#BDEBF4' }} /> : ( 
           <>
-            <div style={{ height: "85%", width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <div style={{ height: "85%", width: "100%", display: "flex", justifyContent: "center", alignItems: "center", overflow: 'auto' }}>
               <Editor initialCode={editorContent} onChange={setEditorContent} />
             </div>
             <div style={{ height: "15%", width: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", backgroundColor: "#161616" }}>
@@ -136,7 +136,7 @@ void main() {
                   exclusive
                   onChange={handleModelChange}
                   aria-label="AI Model Selection"
-                  style={{ color: "white", boxShadow: "0 0 1px #999" }} // Added subtle outline to toggles
+                  style={{ color: "white", boxShadow: "0 0 1px #999" }} 
                 >
                   <ToggleButton value="claude-opus" style={{ color: "white", border: "1px solid rgba(255, 255, 255, 0.3)" }}>Claude-Opus</ToggleButton>
                   <ToggleButton value="gpt4" style={{ color: "white", border: "1px solid rgba(255, 255, 255, 0.3)" }}>GPT-4-Turbo</ToggleButton>

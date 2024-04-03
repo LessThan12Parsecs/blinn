@@ -18,11 +18,6 @@ const Editor = ({ initialCode, onChange }) => {
         height: '100%', 
         width: '100%',
         overflow: 'auto', // Enable scrolling
-        scrollbarWidth: 'none', /* For Firefox */
-        '-ms-overflow-style': 'none', /* For Internet Explorer and Edge */
-        '&::-webkit-scrollbar': {
-          display: 'none' /* For Chrome, Safari, and Opera */
-        }
       }}
     />
 
