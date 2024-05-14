@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import Editor from './Editor';
-import Viewer from './Viewer';
-import Input from './Input'; 
-import CircularProgress from '@mui/material/CircularProgress';
-import IconButton from '@mui/material/IconButton'; 
-import RefreshIcon from '@mui/icons-material/Refresh'; 
-import logo from '../public/logo.png';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import React, { useState, useEffect } from "react";
+import Editor from "./Editor";
+import Viewer from "./Viewer";
+import Input from "./Input";
+import CircularProgress from "@mui/material/CircularProgress";
+import IconButton from "@mui/material/IconButton";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import logo from "../public/logo.png";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 const App = () => {
   const [editorContent, setEditorContent] = useState(`
-  uniform float u_time; 
+  uniform float u_time;
   varying vec2 vUv;
 
   #define PI 3.14159265359
@@ -58,11 +58,11 @@ const App = () => {
       vec3 evolutionColor = vec3(1.0, 0.8, 0.2) * f * smoothstep(0.3, 0.6, evolutionRadius) * random(evolutionSt + t);
       color = mix(color, evolutionColor, evolutionFactor);
       gl_FragColor = vec4(color, 1.0);
-      
+
   }`);
   const [isLoading, setIsLoading] = useState(false); // State to manage loading state
-  const [aiModel, setAiModel] = useState('gpt4'); // State to manage AI model selection
-
+  const [aiModel, setAiModel] = useState("gpt4"); // State to manage AI model selection
+  ``;
   const getEditorContent = () => editorContent;
 
   const handleModelChange = (event, newModel) => {
@@ -71,37 +71,44 @@ const App = () => {
     }
   };
 
-  const handleSubmit = async (data) => {
-    setIsLoading(true); // Set loading to true when the request starts
-    // Remove "uniform float time" and "uniform vec2 resolution" before encoding
-    let contentToEncode = data.editorContent.replace(/uniform float u_time;\nuvarying vec2 vUv;\n\n /, '');
-    const encodedFragmentShader = btoa(contentToEncode);
-    const encodedData = { fragment_shader: encodedFragmentShader, instruction: data.inputValue, ai_model: aiModel };
-    const apiEndpoint = import.meta.env.VITE_BLINN_API_ENDPOINT;
-    const url = `${apiEndpoint}/fragment-shader-change`;
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(encodedData),
-      });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const result = await response.json();
-      // Assuming the API returns the new shader content in base64
-      let newEditorContent = atob(result.result);
-      // Append "uniform time" and "uniform resolution" before setting the response
-      newEditorContent = `uniform float u_time;\nvarying vec2 vUv;\n\n${newEditorContent}`;
-      setEditorContent(newEditorContent);
-    } catch (error) {
-      console.error('Error sending data to API:', error);
-    } finally {
-      setIsLoading(false); // Set loading to false when the request completes
-    }
+const handleSubmit = async (data) => {
+  setIsLoading(true); // Set loading to true when the request starts
+  // Remove "uniform float time" and "uniform vec2 resolution" before encoding
+  let contentToEncode = data.editorContent.replace(
+    /uniform float u_time;\nvarying vec2 vUv;\n?/,
+    ""
+  );
+  const encodedFragmentShader = btoa(contentToEncode);
+  const encodedData = {
+    fragment_shader: encodedFragmentShader,
+    instruction: data.inputValue,
+    ai_model: aiModel,
   };
+  const apiEndpoint = import.meta.env.VITE_BLINN_API_ENDPOINT;
+  const url = `${apiEndpoint}/fragment-shader-change`;
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(encodedData),
+    });
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const result = await response.json();
+    // Assuming the API returns the new shader content in base64
+    let newEditorContent = atob(result.result);
+    // Ensure "varying vec2 vUv; uniform float u_time;" is at the beginning and only once
+    newEditorContent = `varying vec2 vUv;\nuniform float u_time;\n${newEditorContent.replace(/varying vec2 vUv;\n|uniform float u_time;\n/g, "")}`;
+    setEditorContent(newEditorContent);
+  } catch (error) {
+    console.error("Error sending data to API:", error);
+  } finally {
+    setIsLoading(false); // Set loading to false when the request completes
+  }
+};
 
   const resetEditorContent = () => {
     setEditorContent(`uniform float u_time;
@@ -115,39 +122,130 @@ void main() {
 
   return (
     <div style={{ display: "flex", height: "100vh", background: "gray" }}>
-      <img src={logo} alt="Logo" style={{ position: "absolute", top: "2%", right: "46%", width: "200px", height: "auto", zIndex: 1000 }} />
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "100%", backgroundColor: "#000000" }}>
-        {isLoading ? <CircularProgress size={60} thickness={4.5} style={{ color: '#BDEBF4' }} /> : ( 
+      <img
+        src={logo}
+        alt="Logo"
+        style={{
+          position: "absolute",
+          top: "2%",
+          right: "46%",
+          width: "200px",
+          height: "auto",
+          zIndex: 1000,
+        }}
+      />
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+          backgroundColor: "#000000",
+        }}
+      >
+        {isLoading ? (
+          <CircularProgress
+            size={60}
+            thickness={4.5}
+            style={{ color: "#BDEBF4" }}
+          />
+        ) : (
           <>
-            <div style={{ height: "85%", width: "100%", display: "flex", justifyContent: "center", alignItems: "center", overflow: 'auto' }}>
+            <div
+              style={{
+                height: "85%",
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                overflow: "auto",
+              }}
+            >
               <Editor initialCode={editorContent} onChange={setEditorContent} />
             </div>
-            <div style={{ height: "15%", width: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", backgroundColor: "#161616" }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: "100%" }}>
-                <Input getEditorContent={getEditorContent} onSubmit={handleSubmit} />
-                <IconButton onClick={resetEditorContent} style={{ marginLeft: '10px', color: 'white' }} aria-label="reset">
-                    <RefreshIcon />
+            <div
+              style={{
+                height: "15%",
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#161616",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                }}
+              >
+                <Input
+                  getEditorContent={getEditorContent}
+                  onSubmit={handleSubmit}
+                />
+                <IconButton
+                  onClick={resetEditorContent}
+                  style={{ marginLeft: "10px", color: "white" }}
+                  aria-label="reset"
+                >
+                  <RefreshIcon />
                 </IconButton>
               </div>
-              <div style={{ marginTop: "20px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+              <div
+                style={{
+                  marginTop: "20px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <ToggleButtonGroup
                   color="primary"
                   value={aiModel}
                   exclusive
                   onChange={handleModelChange}
                   aria-label="AI Model Selection"
-                  style={{ color: "white", boxShadow: "0 0 1px #999" }} 
+                  style={{ color: "white", boxShadow: "0 0 1px #999" }}
                 >
-                  <ToggleButton value="claude-opus" style={{ color: "white", border: "1px solid rgba(255, 255, 255, 0.3)" }}>Claude-Opus</ToggleButton>
-                  <ToggleButton value="gpt4" style={{ color: "white", border: "1px solid rgba(255, 255, 255, 0.3)" }}>GPT-4-Turbo</ToggleButton>
+                  <ToggleButton
+                    value="claude-opus"
+                    style={{
+                      color: "white",
+                      border: "1px solid rgba(255, 255, 255, 0.3)",
+                    }}
+                  >
+                    Claude-Opus
+                  </ToggleButton>
+                  <ToggleButton
+                    value="gpt4"
+                    style={{
+                      color: "white",
+                      border: "1px solid rgba(255, 255, 255, 0.3)",
+                    }}
+                  >
+                    GPT-4o
+                  </ToggleButton>
                 </ToggleButtonGroup>
               </div>
             </div>
           </>
         )}
       </div>
-      <div style={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
-        <Viewer fragmentShader={editorContent}/>
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+        }}
+      >
+        <Viewer fragmentShader={editorContent} />
       </div>
     </div>
   );
